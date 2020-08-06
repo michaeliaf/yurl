@@ -13,15 +13,22 @@ import (
 )
 
 // validateCmd represents the validate command
-var validateCmd = &cobra.Command{
-	Use:   "validate <URL>",
-	Short: "Validate your link against Apple's requirements",
-	Run: func(cmd *cobra.Command, args []string) {
-		checkDomain(args[0], "", "", true)
-	},
-}
+var (
+	printFl bool
+
+	validateCmd = &cobra.Command{
+		Use:   "validate <URL>",
+		Short: "Validate your link against Apple's requirements",
+		Run: func(cmd *cobra.Command, args []string) {
+			checkDomain(args[0], "", "", true)
+		},
+	}
+)
 
 func init() {
+
+	validateCmd.Flags().BoolVar(&printFl, "print", false, "print AASA contents")
+
 	rootCmd.AddCommand(validateCmd)
 
 	// Here you will define your flags and configuration settings.
@@ -141,11 +148,13 @@ func evaluateAASA(result *http.Response, bundleIdentifier string, teamIdentifier
 
 	err = json.Unmarshal(jsonText, &reqResp)
 	if err != nil {
-		prettyJSON, err := json.MarshalIndent(jsonText, "", "    ")
-		if err != nil {
-			log.Fatal("Failed to print contents", err)
+		if printFl {
+			prettyJSON, err := json.MarshalIndent(jsonText, "", "    ")
+			if err != nil {
+				log.Fatal("Failed to print contents", err)
+			}
+			fmt.Printf("%s\n", string(prettyJSON))
 		}
-		fmt.Printf("%s\n", string(prettyJSON))
 
 		log.Fatal("JSON Validation: Fail")
 	}
@@ -157,11 +166,13 @@ func evaluateAASA(result *http.Response, bundleIdentifier string, teamIdentifier
 	if validJSON {
 		fmt.Printf("JSON Schema: Pass\n\n")
 
-		prettyJSON, err := json.MarshalIndent(reqResp, "", "    ")
-		if err != nil {
-			log.Fatal("Failed to print contents", err)
+		if printFl {
+			prettyJSON, err := json.MarshalIndent(reqResp, "", "    ")
+			if err != nil {
+				log.Fatal("Failed to print contents", err)
+			}
+			fmt.Printf("%s\n", string(prettyJSON))
 		}
-		fmt.Printf("%s\n", string(prettyJSON))
 
 	} else {
 		fmt.Println("JSON Schema: Fail")
