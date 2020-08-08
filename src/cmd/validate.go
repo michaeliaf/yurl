@@ -27,7 +27,7 @@ var (
 
 func init() {
 
-	validateCmd.Flags().BoolVar(&printFl, "print", false, "print AASA contents")
+	validateCmd.Flags().BoolVarP(&printFl, "print", "p", false, "print AASA contents")
 
 	rootCmd.AddCommand(validateCmd)
 
