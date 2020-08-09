@@ -14,42 +14,45 @@ func main() {
 
 	log.Println("Listening on :8080...")
 	http.HandleFunc("/", handler)
-	http.HandleFunc("/main", viewMain)
+	http.HandleFunc("/results", viewResults)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 type PageOutput struct {
 	Content string
+	URL     string
+	Prefix  string
+	Bundle  string
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	input := "https://kohls.onelink.me/asdas"
-
-	output := yurllib.CheckDomain(input, "", "", true)
-
-	var content PageOutput
-
-	for _, item := range output {
-		content.Content += item
-	}
-
 	t, _ := template.ParseFiles("tpl/base.html")
-	t.Execute(w, &content)
+	t.Execute(w, nil)
 }
 
-func viewMain(w http.ResponseWriter, r *http.Request) {
+func viewResults(w http.ResponseWriter, r *http.Request) {
 
-	input := "https://kohls.onelink.me/asdas"
+	url := r.URL.Query()["url"][0]
 
-	output := yurllib.CheckDomain(input, "", "", true)
+	prefix := r.URL.Query()["prefix"][0]
 
-	var content PageOutput
+	bundle := r.URL.Query()["bundle"][0]
+
+	var output []string
+
+	if url == "" {
+		output = []string{}
+	}
+
+	output = yurllib.CheckDomain(url, prefix, bundle, true)
+
+	content := &PageOutput{URL: url, Prefix: prefix, Bundle: bundle}
 
 	for _, item := range output {
 		content.Content += item
 	}
 
-	t, _ := template.ParseFiles("tpl/main.html")
+	t, _ := template.ParseFiles("tpl/results.html")
 	t.Execute(w, &content)
 }

@@ -4,13 +4,14 @@
         <title>yURL: Universal Links / AASA File Validator</title>
         <link href="/static/sanitize.css" rel="stylesheet" />
         <link href="/static/main.css" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/8c05e09944.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <header><a href="https://www.github.com/chayev/yurl" target="_blank">GH</a></header>
+        <header><a href="https://www.github.com/chayev/yurl" target="_blank"><i class="fab fa-github"></i></a></header>
         <main>
             <h1>yURL: Universal Links / AASA File Validator</h1>
             <p>yURL allows you to validate whether a URL is properly configured for Universal Links. This allows you to check if the apple-app-site-association (AASA) file exists and is in the proper format as <a href="https://developer.apple.com/documentation/safariservices/supporting_associated_domains">defined by Apple</a>.</p>
-            <form>
+            <form method="GET" action="/results">
                 <input type="text" name="url" placeholder="Enter a URL test (e.g. https://app.chayev.com/xyx)">
                 <input type="text" name="prefix" placeholder="Apple App Prefix (Optional)">
                 <input type="text" name="bundle" placeholder="Bundle Identifier (Optional)">

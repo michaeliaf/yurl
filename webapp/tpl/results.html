@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>yURL: Universal Links / AASA File Validator</title>
+        <link href="/static/sanitize.css" rel="stylesheet" />
+        <link href="/static/main.css" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/8c05e09944.js" crossorigin="anonymous"></script>
+    </head>
+    <body id="results">
+        <header class="padding"><h1>yURL: Universal Links / AASA File Validator</h1><a href="https://www.github.com/chayev/yurl" target="_blank"><i class="fab fa-github"></i></a></header>
+        <main class="padding">
+            <form method="GET" action="/results" id="aasa">
+                <label for="url">URL</label>
+                <label for="prefix">Apple App Prefix</label>
+                <label for="bundle">Bundle Identifier</label>
+                <input type="text" name="url" value="{{ .URL }}" />  
+                <input type="text" name="prefix" placeholder="Optional" value="{{ .Prefix }}" />  
+                <input type="text" name="bundle" placeholder="Optional" value="{{ .Bundle }}" /> 
+                <a href="#" onclick="document.getElementById('aasa').submit()"><i class="fas fa-redo-alt"></i></a>
+            </form>
+            <h2>Results:</h2>
+            <pre>{{ .Content }}</pre>
+        </main>
+        <footer>© 2020 <a href="https://www.chayev.com">Michael Ibragimchayev</a></footer>
+    </body>
+</html>
